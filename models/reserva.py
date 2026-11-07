@@ -108,3 +108,23 @@ def cancelar_reserva(reserva_id, usuario_id=None):
                  AND estado IN ('activa', 'notificada')""",
             (reserva["ejemplar_id"], reserva["turno"]),
         )
+
+
+def notificar_siguiente_reserva(ejemplar_id, database=None):
+    database = database or get_db()
+    reserva = database.execute(
+        """SELECT r.id, r.usuario_id, u.nombre, u.correo
+           FROM reservas r JOIN usuarios u ON u.id = r.usuario_id
+           WHERE r.ejemplar_id = ? AND r.estado = 'activa'
+           ORDER BY r.turno, r.id LIMIT 1""",
+        (ejemplar_id,),
+    ).fetchone()
+    if reserva is None:
+        return None
+    actualizada = database.execute(
+        """UPDATE reservas
+           SET estado = 'notificada', notificada_en = CURRENT_TIMESTAMP
+           WHERE id = ? AND estado = 'activa'""",
+        (reserva["id"],),
+    )
+    return reserva if actualizada.rowcount == 1 else None

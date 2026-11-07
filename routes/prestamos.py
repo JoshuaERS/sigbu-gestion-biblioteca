@@ -28,9 +28,15 @@ def nuevo():
 @bp.post("/<int:prestamo_id>/devolver")
 def devolver(prestamo_id):
     try:
-        registrar_devolucion(prestamo_id)
+        notificacion = registrar_devolucion(prestamo_id)
     except ValueError as error:
         flash(str(error), "error")
     else:
-        flash("Devolución registrada.", "success")
+        if notificacion:
+            flash(
+                f"Devolución registrada. Disponibilidad notificada a {notificacion['nombre']} ({notificacion['correo']}).",
+                "success",
+            )
+        else:
+            flash("Devolución registrada.", "success")
     return redirect(url_for("prestamos.index"))

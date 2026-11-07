@@ -75,3 +75,8 @@ def registrar_devolucion(prestamo_id):
             "UPDATE ejemplares SET estado = 'disponible' WHERE id = ?",
             (prestamo["ejemplar_id"],),
         )
+        if current_app.config.get("RESERVAS_HABILITADAS"):
+            from .reserva import notificar_siguiente_reserva
+
+            return notificar_siguiente_reserva(prestamo["ejemplar_id"], database)
+    return None
