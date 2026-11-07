@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block content %}<section class="card"><h2>Ejemplares de {{ libro.titulo }}</h2><form method="post"><label>Código de inventario<input name="codigo_inventario" required></label><label>Ubicación<input name="ubicacion"></label><button>Agregar ejemplar</button></form>
+<ul>{% for e in ejemplares %}<li>{{ e.codigo_inventario }} · {{ e.ubicacion or 'Sin ubicación' }} · {{ e.estado }}</li>{% else %}<li>No hay ejemplares.</li>{% endfor %}</ul></section>{% endblock %}

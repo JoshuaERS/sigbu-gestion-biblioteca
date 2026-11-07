@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Categorías | SIGBU{% endblock %}
+{% block content %}
+<section class="card">
+    <div class="titulo-acciones">
+        <div>
+            <h2>Categorías</h2>
+            <p>Clasificación temática disponible para los libros.</p>
+        </div>
+        <a class="boton" href="{{ url_for('categorias.nueva') }}">Nueva categoría</a>
+    </div>
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Registro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for categoria in categorias %}
+                <tr>
+                    <td>{{ categoria.nombre }}</td>
+                    <td>{{ categoria.descripcion or "Sin descripción" }}</td>
+                    <td>{{ categoria.creado_en }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No hay categorías registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

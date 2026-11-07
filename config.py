@@ -1,0 +1,17 @@
+import os
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent
+
+
+class Config:
+    SECRET_KEY = "desarrollo-sigbu-cambiar-en-produccion"
+    DATABASE = BASE_DIR / "database.db"
+    UPLOAD_FOLDER = BASE_DIR / "uploads"
+    MAX_CONTENT_LENGTH = 8 * 1024 * 1024
+    VERSION = "1.2.0"
+    LINEA_BASE = "LB-02"
+    DEFAULT_ADMIN_EMAIL = os.getenv("SIGBU_ADMIN_EMAIL", "admin@sigbu.local")
+    DEFAULT_ADMIN_PASSWORD = os.getenv("SIGBU_ADMIN_PASSWORD")
+

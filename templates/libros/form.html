@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}<section class="card"><h2>Nuevo libro</h2><form method="post">
+<label>ISBN<input name="isbn" required></label><label>Título<input name="titulo" required></label><label>Autor<input name="autor" required></label>
+<label>Editorial<input name="editorial"></label><label>Año<input type="number" name="anio_publicacion" min="1000" max="2100"></label>
+<label>Categoría<select name="categoria_id"><option value="">Sin categoría</option>{% for c in categorias %}<option value="{{ c.id }}">{{ c.nombre }}</option>{% endfor %}</select></label>
+<label>Descripción<textarea name="descripcion"></textarea></label><button>Guardar</button></form></section>{% endblock %}

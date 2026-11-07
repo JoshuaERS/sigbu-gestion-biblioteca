@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123c35">
+  <title>{% block title %}SIGBU{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="{{ url_for('dashboard.index') }}" aria-label="Ir al inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><path d="M9 10.5c5.4 0 10.4 1.5 15 4.7 4.6-3.2 9.6-4.7 15-4.7v26c-5.5 0-10.5 1.4-15 4.3-4.5-2.9-9.5-4.3-15-4.3v-26Z"/><path d="M24 15.2v25.6"/></svg>
+        </span>
+        <span><strong>SIGBU</strong><small>Biblioteca Universitaria</small></span>
+      </a>
+
+      <div class="version-chip"><span></span> v{{ config.VERSION }} · {{ config.LINEA_BASE }}</div>
+      {% if session.usuario_id %}
+      <p class="nav-label">Navegación</p>
+      <nav class="main-nav">
+        <a class="{{ 'active' if request.endpoint == 'dashboard.index' else '' }}" href="{{ url_for('dashboard.index') }}"><span>⌂</span>Panel principal</a>
+        <a class="{{ 'active' if request.blueprint == 'libros' else '' }}" href="{{ url_for('libros.index') }}"><span>▤</span>Libros</a>
+        <a class="{{ 'active' if request.blueprint == 'categorias' else '' }}" href="{{ url_for('categorias.index') }}"><span>◇</span>Categorías</a>
+        <a class="{{ 'active' if request.blueprint == 'usuarios' else '' }}" href="{{ url_for('usuarios.index') }}"><span>♙</span>Usuarios</a>
+        <a class="{{ 'active' if request.blueprint == 'prestamos' else '' }}" href="{{ url_for('prestamos.index') }}"><span>⇄</span>Préstamos</a>
+      </nav>
+      {% else %}
+      <div class="access-message"><strong>Acceso protegido</strong><p>Inicia sesión para consultar y administrar los recursos de la biblioteca.</p></div>
+      {% endif %}
+
+      <div class="sidebar-footer">
+        {% if session.usuario_id %}
+          <div class="user-card"><span class="avatar">{{ session.usuario_nombre[:1] }}</span><div><strong>{{ session.usuario_nombre }}</strong><small>Sesión activa</small></div></div>
+          <form method="post" action="{{ url_for('auth.logout') }}"><button class="ghost-button" type="submit">Cerrar sesión</button></form>
+        {% else %}<p>Utiliza tus credenciales institucionales para continuar.</p>{% endif %}
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div><span class="eyebrow">Universidad · Gestión académica</span><h1>{% block page_title %}Panel principal{% endblock %}</h1></div>
+        <div class="topbar-status"><span></span>Sistema operativo</div>
+      </header>
+      <main>
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+          {% for categoria, mensaje in mensajes %}<div class="flash {{ categoria }}"><strong>{{ 'Atención' if categoria == 'error' else 'Listo' }}</strong><span>{{ mensaje }}</span></div>{% endfor %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </main>
+      <footer>© 2026 SIGBU · Sistema de Gestión de Biblioteca Universitaria</footer>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

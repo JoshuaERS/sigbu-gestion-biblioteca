@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión | SIGBU{% endblock %}
+{% block page_title %}Acceso al sistema{% endblock %}
+{% block content %}
+  <section class="login-layout">
+    <article class="card login-card">
+      <span class="eyebrow">Portal institucional</span>
+      <h2>Bienvenido a SIGBU</h2>
+      <p>Ingresa con tu cuenta autorizada para acceder a las funciones de gestión bibliotecaria.</p>
+    <form method="post">
+      <label>Correo institucional<input type="email" name="correo" placeholder="nombre@universidad.edu.pe" required autofocus></label>
+      <label>Contraseña<input type="password" name="password" placeholder="••••••••" required></label>
+      <button type="submit">Ingresar al sistema</button>
+    </form>
+      <div class="demo-access"><strong>Acceso protegido</strong><span>Las credenciales iniciales se configuran localmente y nunca se publican en el repositorio.</span></div>
+    </article>
+    <aside class="login-info"><span>LB-02</span><h2>Gestión segura y centralizada</h2><p>El acceso autenticado protege el catálogo, los datos de usuarios y las operaciones de préstamo.</p><ul><li>Control de circulación</li><li>Gestión de ejemplares</li><li>Administración de usuarios</li></ul></aside>
+  </section>
+{% endblock %}
+

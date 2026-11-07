@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Libros | SIGBU{% endblock %}{% block content %}
+<section class="card"><div class="actions"><h2>Catálogo de libros</h2><a class="button" href="{{ url_for('libros.nuevo') }}">Nuevo libro</a></div>
+<form class="search"><input name="q" value="{{ request.args.get('q','') }}" placeholder="Título, autor o ISBN"><button>Buscar</button></form>
+<table><thead><tr><th>ISBN</th><th>Título</th><th>Autor</th><th>Categoría</th><th>Ejemplares</th><th>Disponibles</th><th></th></tr></thead><tbody>
+{% for libro in libros %}<tr><td>{{ libro.isbn }}</td><td>{{ libro.titulo }}</td><td>{{ libro.autor }}</td><td>{{ libro.categoria or '-' }}</td><td>{{ libro.total_ejemplares }}</td><td>{{ libro.disponibles or 0 }}</td><td><a href="{{ url_for('libros.nuevo_ejemplar', libro_id=libro.id) }}">Ejemplares</a></td></tr>{% else %}<tr><td colspan="7">No hay libros registrados.</td></tr>{% endfor %}
+</tbody></table></section>{% endblock %}
