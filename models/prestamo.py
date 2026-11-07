@@ -1,5 +1,7 @@
 from datetime import date, timedelta
 
+from flask import current_app
+
 from . import get_db
 
 
@@ -31,12 +33,14 @@ def registrar_prestamo(usuario_id, ejemplar_id, dias=7):
             raise ValueError("El usuario no existe o está inactivo.")
         if ejemplar is None or ejemplar["estado"] != "disponible":
             raise ValueError("El ejemplar no está disponible.")
-        reserva = database.execute(
-            """SELECT * FROM reservas
-               WHERE ejemplar_id = ? AND estado IN ('activa', 'notificada')
-               ORDER BY turno, id LIMIT 1""",
-            (ejemplar_id,),
-        ).fetchone()
+        reserva = None
+        if current_app.config.get("RESERVAS_HABILITADAS"):
+            reserva = database.execute(
+                """SELECT * FROM reservas
+                   WHERE ejemplar_id = ? AND estado IN ('activa', 'notificada')
+                   ORDER BY turno, id LIMIT 1""",
+                (ejemplar_id,),
+            ).fetchone()
         if reserva is not None and reserva["usuario_id"] != usuario_id:
             raise ValueError("El ejemplar está reservado por otro usuario.")
         cursor = database.execute(

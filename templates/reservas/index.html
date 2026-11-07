@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Reservas | SIGBU{% endblock %}
+{% block page_title %}Gestión de reservas{% endblock %}
+{% block content %}
+<section class="card"><div class="actions"><div><span class="eyebrow">SCR-2026-001</span><h2>Reservas de ejemplares</h2></div><a class="button" href="{{ url_for('reservas.nueva') }}">Nueva reserva</a></div>
+<div class="tabla-contenedor"><table><thead><tr><th>Turno</th><th>Usuario</th><th>Libro</th><th>Ejemplar</th><th>Estado</th><th>Creada</th><th></th></tr></thead><tbody>
+{% for r in reservas %}<tr><td>#{{ r.turno }}</td><td>{{ r.codigo_usuario }} · {{ r.usuario }}</td><td>{{ r.titulo }}</td><td>{{ r.codigo_inventario }}</td><td>{{ r.estado }}</td><td>{{ r.creada_en }}</td><td>{% if r.estado in ('activa','notificada') %}<form class="inline" method="post" action="{{ url_for('reservas.cancelar', reserva_id=r.id) }}"><button>Cancelar</button></form>{% endif %}</td></tr>{% else %}<tr><td colspan="7">No hay reservas registradas.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

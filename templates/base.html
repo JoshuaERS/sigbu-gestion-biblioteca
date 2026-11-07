@@ -30,6 +30,7 @@
         <a class="{{ 'active' if request.blueprint == 'categorias' else '' }}" href="{{ url_for('categorias.index') }}"><span>◇</span>Categorías</a>
         <a class="{{ 'active' if request.blueprint == 'usuarios' else '' }}" href="{{ url_for('usuarios.index') }}"><span>♙</span>Usuarios</a>
         <a class="{{ 'active' if request.blueprint == 'prestamos' else '' }}" href="{{ url_for('prestamos.index') }}"><span>⇄</span>Préstamos</a>
+        {% if config.RESERVAS_HABILITADAS %}<a class="{{ 'active' if request.blueprint == 'reservas' else '' }}" href="{{ url_for('reservas.index') }}"><span>◷</span>Reservas</a>{% endif %}
       </nav>
       {% else %}
       <div class="access-message"><strong>Acceso protegido</strong><p>Inicia sesión para consultar y administrar los recursos de la biblioteca.</p></div>

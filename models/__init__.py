@@ -42,9 +42,16 @@ def crear_administrador_inicial():
             )
 
 
+def aplicar_migracion_reservas():
+    if current_app.config.get("RESERVAS_HABILITADAS"):
+        with current_app.open_resource("migrations/001_reservas_up.sql") as script:
+            get_db().executescript(script.read().decode("utf-8"))
+
+
 def init_app(app):
     app.teardown_appcontext(close_db)
     with app.app_context():
         init_db()
+        aplicar_migracion_reservas()
         crear_administrador_inicial()
 
