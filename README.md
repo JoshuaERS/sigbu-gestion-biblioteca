@@ -1,6 +1,6 @@
 # SIGBU
 
-Sistema de Gestión de Biblioteca Universitaria con Flask y SQLite. Este estado corresponde a la versión inicial `1.2.0`, línea base `LB-02`.
+Sistema de Gestión de Biblioteca Universitaria con Flask y SQLite. La versión estable actual es `1.3.0`, línea base `LB-03`.
 
 ## Funcionalidades
 
@@ -26,9 +26,9 @@ python -m unittest discover -v
 
 La base `database.db` se crea automáticamente desde `database/schema.sql`.
 
-## Módulo de reservas en desarrollo
+## Módulo de reservas
 
-La rama `feature/SCR-2026-001` incorpora reservas detrás de una bandera. Para habilitarla localmente:
+La versión `1.3.0` incorpora reservas detrás de una bandera. Para habilitarla localmente:
 
 ```powershell
 $env:SIGBU_RESERVAS_HABILITADAS = "true"

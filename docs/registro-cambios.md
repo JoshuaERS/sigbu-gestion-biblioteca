@@ -4,7 +4,7 @@
 
 Versión inicial estable con usuarios, catálogo, ejemplares, préstamos y devoluciones.
 
-## 1.3.0 LB-03 propuesta
+## 1.3.0 LB-03
 
 - SCR: SCR-2026-001.
 - Nueva tabla `reservas` con migración y reversión.
