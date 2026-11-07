@@ -26,6 +26,17 @@ python -m unittest discover -v
 
 La base `database.db` se crea automáticamente desde `database/schema.sql`.
 
+## Módulo de reservas en desarrollo
+
+La rama `feature/SCR-2026-001` incorpora reservas detrás de una bandera. Para habilitarla localmente:
+
+```powershell
+$env:SIGBU_RESERVAS_HABILITADAS = "true"
+flask --app app run --debug
+```
+
+Al activarla, se aplica `migrations/001_reservas_up.sql`. Para el rollback se utiliza `migrations/001_reservas_down.sql`. El límite predeterminado es de tres reservas pendientes por usuario y puede configurarse mediante `SIGBU_MAX_RESERVAS`.
+
 ## Credenciales iniciales
 
 Antes del primer inicio, defina una contraseña local para el administrador:

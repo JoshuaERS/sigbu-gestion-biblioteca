@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Nueva reserva | SIGBU{% endblock %}
+{% block page_title %}Registrar reserva{% endblock %}
+{% block content %}<section class="card"><span class="eyebrow">Solo ejemplares prestados</span><h2>Nueva reserva</h2><form method="post">
+<label>Usuario<select name="usuario_id" required>{% for u in usuarios %}<option value="{{ u.id }}">{{ u.codigo }} · {{ u.nombre }}</option>{% endfor %}</select></label>
+<label>Ejemplar prestado<select name="ejemplar_id" required>{% for e in ejemplares %}<option value="{{ e.id }}">{{ e.codigo_inventario }} · {{ e.titulo }} · {{ e.autor }}</option>{% endfor %}</select></label>
+<button>Registrar reserva</button></form></section>{% endblock %}

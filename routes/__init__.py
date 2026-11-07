@@ -3,9 +3,12 @@ from .categorias import bp as categorias_bp
 from .dashboard import bp as dashboard_bp
 from .libros import bp as libros_bp
 from .prestamos import bp as prestamos_bp
+from .reservas import bp as reservas_bp
 from .usuarios import bp as usuarios_bp
 
 
 def register_blueprints(app):
     for blueprint in (dashboard_bp, auth_bp, categorias_bp, libros_bp, usuarios_bp, prestamos_bp):
         app.register_blueprint(blueprint)
+    if app.config.get("RESERVAS_HABILITADAS"):
+        app.register_blueprint(reservas_bp)
