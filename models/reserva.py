@@ -1,3 +1,5 @@
+from flask import current_app
+
 from . import get_db
 
 
@@ -29,6 +31,15 @@ def obtener_reserva(reserva_id):
     return get_db().execute("SELECT * FROM reservas WHERE id = ?", (reserva_id,)).fetchone()
 
 
+def obtener_primera_reserva_pendiente(ejemplar_id):
+    return get_db().execute(
+        """SELECT * FROM reservas
+           WHERE ejemplar_id = ? AND estado IN ('activa', 'notificada')
+           ORDER BY turno, id LIMIT 1""",
+        (ejemplar_id,),
+    ).fetchone()
+
+
 def crear_reserva(usuario_id, ejemplar_id):
     database = get_db()
     with database:
@@ -44,6 +55,15 @@ def crear_reserva(usuario_id, ejemplar_id):
             raise ValueError("El ejemplar no existe.")
         if ejemplar["estado"] != "prestado":
             raise ValueError("El ejemplar está disponible y puede prestarse directamente.")
+        total_activas = database.execute(
+            """SELECT COUNT(*) FROM reservas
+               WHERE usuario_id = ? AND estado IN ('activa', 'notificada')""",
+            (usuario_id,),
+        ).fetchone()[0]
+        if total_activas >= current_app.config["MAX_RESERVAS_ACTIVAS"]:
+            raise ValueError(
+                f"El usuario alcanzó el límite de {current_app.config['MAX_RESERVAS_ACTIVAS']} reservas activas."
+            )
         duplicada = database.execute(
             """SELECT 1 FROM reservas
                WHERE usuario_id = ? AND ejemplar_id = ?

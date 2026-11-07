@@ -31,6 +31,14 @@ def registrar_prestamo(usuario_id, ejemplar_id, dias=7):
             raise ValueError("El usuario no existe o está inactivo.")
         if ejemplar is None or ejemplar["estado"] != "disponible":
             raise ValueError("El ejemplar no está disponible.")
+        reserva = database.execute(
+            """SELECT * FROM reservas
+               WHERE ejemplar_id = ? AND estado IN ('activa', 'notificada')
+               ORDER BY turno, id LIMIT 1""",
+            (ejemplar_id,),
+        ).fetchone()
+        if reserva is not None and reserva["usuario_id"] != usuario_id:
+            raise ValueError("El ejemplar está reservado por otro usuario.")
         cursor = database.execute(
             """INSERT INTO prestamos
                (usuario_id, ejemplar_id, fecha_prestamo, fecha_vencimiento)
@@ -38,6 +46,10 @@ def registrar_prestamo(usuario_id, ejemplar_id, dias=7):
             (usuario_id, ejemplar_id, hoy.isoformat(), (hoy + timedelta(days=dias)).isoformat()),
         )
         database.execute("UPDATE ejemplares SET estado = 'prestado' WHERE id = ?", (ejemplar_id,))
+        if reserva is not None:
+            database.execute(
+                "UPDATE reservas SET estado = 'atendida' WHERE id = ?", (reserva["id"],)
+            )
     return cursor.lastrowid
 
 
